@@ -54,8 +54,15 @@ window.StudyPlannerUI = {
         const sidebar = document.querySelector('.sidebar');
         const overlay = document.getElementById('sidebar-overlay');
         if (!sidebar) return;
-        const isOpen = sidebar.classList.toggle('open');
-        if (overlay) overlay.classList.toggle('visible', isOpen);
+
+        // If on Desktop (> 900px wide), toggle body collapse class
+        if (window.innerWidth > 900) {
+            document.body.classList.toggle('sidebar-collapsed');
+        } else {
+            // On Mobile, keep your existing overlay behavior
+            const isOpen = sidebar.classList.toggle('open');
+            if (overlay) overlay.classList.toggle('visible', isOpen);
+        }
     },
 
     closeSidebar: function () {

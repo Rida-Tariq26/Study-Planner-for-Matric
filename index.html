@@ -19,7 +19,7 @@
 
     <!-- ==================== DESKTOP SHELL CONTROLS ==================== -->
     <!-- Dev shell controls — hidden in production; toggle via Settings modal -->
-    <div class="shell-controls-bar hidden" id="shell-controls-bar" aria-hidden="true">
+    <div class="shell-controls-bar" id="shell-controls-bar">
         <span>View</span>
         <button class="shell-toggle-btn active" data-shell-mode="frame" onclick="ui.setShellMode('frame')">
             📱 Mobile Frame
@@ -118,13 +118,12 @@
                             <button type="submit" class="glass-btn primary-btn btn-glowing"
                                 style="width:100%;padding:0.75rem;margin-top:0.5rem;">Send Reset Link</button>
                             <button type="button" class="glass-btn secondary-btn w-full"
-                                style="padding:0.75rem;margin-top:0.5rem;"
-                                onclick="appRoute.hideForgotPassword()">Back to Login</button>
+                                style="padding:0.75rem;margin-top:0.5rem;" onclick="appRoute.hideForgotPassword()">Back
+                                to Login</button>
                         </form>
 
                         <!-- Set New Password (shown after clicking reset link in email) -->
-                        <form id="form-reset-password" class="auth-form"
-                            onsubmit="appRoute.handleResetPassword(event)">
+                        <form id="form-reset-password" class="auth-form" onsubmit="appRoute.handleResetPassword(event)">
                             <p class="auth-subtitle" style="margin-bottom:1rem;">Choose a new password for your
                                 account.</p>
                             <div class="form-group">
@@ -1205,7 +1204,8 @@
                 <h4>Gemini AI Mentor</h4>
                 <p class="text-xs text-muted mb-sm">Add your own free Gemini API key to power Mentor Chat with real
                     AI responses tailored to your board, stream, and target. Your key is stored only in this
-                    browser's local storage — it is never uploaded to our servers or sent anywhere except directly to Google's API.</p>
+                    browser's local storage — it is never uploaded to our servers or sent anywhere except directly to
+                    Google's API.</p>
                 <form onsubmit="ui.handleSaveGeminiKey(event)">
                     <div class="settings-key-row">
                         <input type="password" id="settings-gemini-key-input" class="glass-input"
