@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyGuide – AI Study Planner for Matric Students</title>
+    <meta name="description"
+        content="A premium AI-powered study planner for Pakistani Matric students. Personalised schedules, mock tests, and smart timetables.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-shell-mode="frame">
+
+    <!-- ==================== DESKTOP SHELL CONTROLS ==================== -->
+    <!-- Dev shell controls — hidden in production; toggle via Settings modal -->
+    <div class="shell-controls-bar hidden" id="shell-controls-bar" aria-hidden="true">
+        <span>View</span>
+        <button class="shell-toggle-btn active" data-shell-mode="frame" onclick="ui.setShellMode('frame')">
+            📱 Mobile Frame
+        </button>
+        <button class="shell-toggle-btn" data-shell-mode="full" onclick="ui.setShellMode('full')">
+            🖥️ Full-screen
+        </button>
+    </div>
+
+    <!-- Toast notification container -->
+    <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- ==================== APP CONTAINER ==================== -->
+    <div id="app-container">
+        <div class="device-screen">
+            <div class="device-status-bar">
+                <span id="device-status-time">9:41</span>
+                <div class="status-icons">
+                    <span>📶</span><span>📡</span><span>🔋</span>
+                </div>
+            </div>
+            <div class="device-screen-content">
+
+                <!-- ==================== SCREEN 1: AUTHENTICATION ==================== -->
+                <section id="screen-auth" class="auth-screen">
+                    <div class="auth-card animate-fade-in">
+                        <div class="auth-logo-wrap">
+                            <!-- StudyGuide SVG Logo -->
+                            <div class="sg-logo"
+                                style="justify-content:center;display:flex;flex-direction:column;align-items:center;gap:0.4rem;">
+                                <div style="display:flex;align-items:center;gap:0.55rem;">
+                                    <div class="logo-icon">
+                                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <rect width="36" height="36" rx="10" fill="#6366F1" fill-opacity="0.15" />
+                                            <path
+                                                d="M9 11C9 9.89 9.89 9 11 9H25C26.11 9 27 9.89 27 11V25C27 26.11 26.11 27 25 27H11C9.89 27 9 26.11 9 25V11Z"
+                                                stroke="#818CF8" stroke-width="1.5" fill="none" />
+                                            <path d="M13 14H23M13 18H20M13 22H18" stroke="#818CF8" stroke-width="1.5"
+                                                stroke-linecap="round" />
+                                            <circle cx="25" cy="11" r="4" fill="#6366F1" />
+                                            <path d="M23.5 11L24.5 12L26.5 10" stroke="#fff" stroke-width="1.2"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </div>
+                                    <span
+                                        style="font-family:'Outfit',sans-serif;font-weight:800;font-size:1.65rem;color:var(--text-primary);">Study<span
+                                            style="color:#818CF8;">Guide</span></span>
+                                </div>
+                                <span
+                                    style="font-size:0.75rem;color:var(--text-secondary);font-family:'Inter',sans-serif;">Your
+                                    AI Study Companion</span>
+                            </div>
+                        </div>
+
+                        <h1 class="auth-title">Empower Your Matric Prep</h1>
+                        <p class="auth-subtitle">Personalised AI Mentor schedules, mock tests &amp; smart timetables.
+                        </p>
+
+                        <div class="auth-tabs">
+                            <button id="tab-login-btn" class="auth-tab active"
+                                onclick="appRoute.switchAuthTab('login')">Login</button>
+                            <button id="tab-register-btn" class="auth-tab"
+                                onclick="appRoute.switchAuthTab('register')">Register</button>
+                        </div>
+
+                        <!-- Login Form -->
+                        <form id="form-login" class="auth-form active" onsubmit="appRoute.handleLogin(event)">
+                            <div class="form-group">
+                                <label for="login-username">Username or Email</label>
+                                <input type="text" id="login-username" class="glass-input"
+                                    placeholder="e.g. hamza123 or student@fbise.edu.pk" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="login-password">Password</label>
+                                <input type="password" id="login-password" class="glass-input" placeholder="••••••••"
+                                    required>
+                            </div>
+                            <div class="auth-form-footer">
+                                <button type="button" class="auth-link-btn"
+                                    onclick="appRoute.showForgotPassword()">Forgot password?</button>
+                            </div>
+                            <button type="submit" class="glass-btn primary-btn btn-glowing"
+                                style="width:100%;padding:0.75rem;margin-top:0.5rem;">Sign In</button>
+                        </form>
+
+                        <!-- Forgot Password Form -->
+                        <form id="form-forgot" class="auth-form" onsubmit="appRoute.handleForgotPassword(event)">
+                            <p class="auth-subtitle" style="margin-bottom:1rem;">Enter your email and we'll send you a
+                                link to reset your password.</p>
+                            <div class="form-group">
+                                <label for="forgot-email">Email Address</label>
+                                <input type="email" id="forgot-email" class="glass-input"
+                                    placeholder="student@example.com" required>
+                            </div>
+                            <button type="submit" class="glass-btn primary-btn btn-glowing"
+                                style="width:100%;padding:0.75rem;margin-top:0.5rem;">Send Reset Link</button>
+                            <button type="button" class="glass-btn secondary-btn w-full"
+                                style="padding:0.75rem;margin-top:0.5rem;"
+                                onclick="appRoute.hideForgotPassword()">Back to Login</button>
+                        </form>
+
+                        <!-- Set New Password (shown after clicking reset link in email) -->
+                        <form id="form-reset-password" class="auth-form"
+                            onsubmit="appRoute.handleResetPassword(event)">
+                            <p class="auth-subtitle" style="margin-bottom:1rem;">Choose a new password for your
+                                account.</p>
+                            <div class="form-group">
+                                <label for="reset-password">New Password</label>
+                                <input type="password" id="reset-password" class="glass-input"
+                                    placeholder="Minimum 8 characters" required minlength="8"
+                                    oninput="appRoute.updatePasswordStrength(this, 'reset-pw-strength-bar', 'reset-pw-strength-label')">
+                                <div class="pw-strength-wrap">
+                                    <div class="pw-strength-track">
+                                        <div id="reset-pw-strength-bar" class="pw-strength-bar"></div>
+                                    </div>
+                                    <span id="reset-pw-strength-label" class="pw-strength-label"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="reset-confirm">Confirm New Password</label>
+                                <input type="password" id="reset-confirm" class="glass-input" placeholder="••••••••"
+                                    required>
+                            </div>
+                            <button type="submit" class="glass-btn primary-btn btn-glowing"
+                                style="width:100%;padding:0.75rem;margin-top:0.5rem;">Update Password</button>
+                        </form>
+
+                        <!-- Registration Form -->
+                        <form id="form-register" class="auth-form" onsubmit="appRoute.handleRegister(event)">
+                            <div class="form-group">
+                                <label for="reg-username">Username</label>
+                                <input type="text" id="reg-username" class="glass-input"
+                                    placeholder="e.g. matric_topper" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-email">Email Address</label>
+                                <input type="email" id="reg-email" class="glass-input" placeholder="student@example.com"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-password">Password</label>
+                                <input type="password" id="reg-password" class="glass-input"
+                                    placeholder="Minimum 8 characters" required minlength="8"
+                                    oninput="appRoute.updatePasswordStrength(this)">
+                                <div class="pw-strength-wrap">
+                                    <div class="pw-strength-track">
+                                        <div id="pw-strength-bar" class="pw-strength-bar"></div>
+                                    </div>
+                                    <span id="pw-strength-label" class="pw-strength-label"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-confirm">Confirm Password</label>
+                                <input type="password" id="reg-confirm" class="glass-input" placeholder="••••••••"
+                                    required>
+                            </div>
+                            <button type="submit" class="glass-btn primary-btn btn-glowing"
+                                style="width:100%;padding:0.75rem;margin-top:0.5rem;">Create Account</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- ==================== SCREEN 2: EMAIL VERIFICATION ==================== -->
+                <section id="screen-verify" class="auth-screen hidden">
+                    <div class="auth-card text-center">
+                        <div style="font-size:2.5rem;margin-bottom:1rem;">✉️</div>
+                        <h1 class="auth-title">Verify Your Email</h1>
+                        <p class="auth-subtitle">We've sent a verification link to <strong
+                                id="verify-email-display">your email</strong>. Click the link to verify your account,
+                            then come back here and log in.</p>
+
+                        <div class="flex flex-column gap-sm mt-md" style="align-items:stretch;">
+                            <button id="btn-resend-email" type="button" class="glass-btn secondary-btn w-full"
+                                style="padding:0.75rem;" onclick="appRoute.handleResendEmail()">Resend Email</button>
+                            <button type="button" class="glass-btn primary-btn btn-glowing w-full"
+                                style="padding:0.75rem;"
+                                onclick="window.ui.showScreen('screen-auth'); appRoute.switchAuthTab('login')">Back to
+                                Login</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==================== SCREEN 3: ONBOARDING WIZARD ==================== -->
+                <section id="screen-onboarding" class="hidden">
+                    <div class="onboarding-container animate-fade-in">
+                        <!-- Wizard Progress -->
+                        <div class="wizard-progress">
+                            <div class="wizard-step active" data-step="1"><span>1</span><label>Profile</label></div>
+                            <div class="wizard-line"></div>
+                            <div class="wizard-step" data-step="2"><span>2</span><label>Subjects</label></div>
+                            <div class="wizard-line"></div>
+                            <div class="wizard-step" data-step="3"><span>3</span><label>Availability</label></div>
+                            <div class="wizard-line"></div>
+                            <div class="wizard-step" data-step="4"><span>4</span><label>Goals</label></div>
+                        </div>
+
+                        <div class="wizard-steps-content">
+
+                            <!-- Step 1: Basic Profile -->
+                            <div class="wizard-step-panel active" id="step-1">
+                                <h2>Personalise Your Study Journey</h2>
+                                <p class="step-desc">Tell us your Board and Class to load the specific Pakistani Matric
+                                    syllabus.</p>
+                                <div class="form-group">
+                                    <label for="ob-fullname">Full Name</label>
+                                    <input type="text" id="ob-fullname" class="glass-input"
+                                        placeholder="e.g. Muhammad Hamza" required>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-6">
+                                        <label for="ob-board">Educational Board</label>
+                                        <select id="ob-board" class="glass-input" required>
+                                            <option value="" disabled selected>Select your Board</option>
+                                            <!-- Populated dynamically -->
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="ob-class">Class / Grade</label>
+                                        <select id="ob-class" class="glass-input" required>
+                                            <option value="" disabled selected>Select Class</option>
+                                            <option value="9th">Matric Part I (9th Grade)</option>
+                                            <option value="10th">Matric Part II (10th Grade)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="wizard-buttons">
+                                    <div></div>
+                                    <button type="button" class="glass-btn primary-btn btn-glowing"
+                                        onclick="onboarding.nextStep(1)">Next Step ➡️</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Subject Stream -->
+                            <div class="wizard-step-panel" id="step-2">
+                                <h2>Choose Your Subjects</h2>
+                                <p class="step-desc">Select your Matric academic stream. We'll customise your syllabus
+                                    chapters
+                                    accordingly.</p>
+                                <div class="stream-selector-grid">
+                                    <div class="stream-card" onclick="onboarding.selectStream('science_bio', this)">
+                                        <div class="stream-icon">🔬</div>
+                                        <h3>Science (Biology)</h3>
+                                        <p>Maths, Physics, Chemistry, Biology, English, Urdu, Islamiyat, Quran, Pak
+                                            Studies</p>
+                                    </div>
+                                    <div class="stream-card" onclick="onboarding.selectStream('science_cs', this)">
+                                        <div class="stream-icon">💻</div>
+                                        <h3>Science (Computer)</h3>
+                                        <p>Maths, Physics, Chemistry, Computer Science, English, Urdu, Islamiyat, Quran,
+                                            Pak
+                                            Studies</p>
+                                    </div>
+                                    <div class="stream-card" onclick="onboarding.selectStream('arts', this)">
+                                        <div class="stream-icon">🏛️</div>
+                                        <h3>Humanities / Arts</h3>
+                                        <p>General Maths, General Science, Civics, Islamic Studies, English, Urdu,
+                                            Islamiyat,
+                                            Quran</p>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="ob-stream" required>
+                                <div id="subject-preview-container" class="subject-preview-container mt-md hidden">
+                                    <p class="text-sm mb-sm"><strong>Loaded Subjects:</strong></p>
+                                    <div id="subject-badges" class="flex flex-wrap gap-xs"></div>
+                                </div>
+                                <div class="wizard-buttons">
+                                    <button type="button" class="glass-btn secondary-btn"
+                                        onclick="onboarding.prevStep(2)">❮
+                                        Back</button>
+                                    <button type="button" class="glass-btn primary-btn btn-glowing" id="btn-step-2-next"
+                                        onclick="onboarding.nextStep(2)" disabled>Next Step ❯</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Availability -->
+                            <div class="wizard-step-panel" id="step-3">
+                                <h2>Your Study Time</h2>
+                                <p class="step-desc">A realistic planner fits around your daily schedule. Set your
+                                    preferences.
+                                </p>
+                                <div class="form-group">
+                                    <label>Daily Available Study Hours: <span id="study-hours-val"
+                                            class="text-accent font-bold">3 Hours</span></label>
+                                    <input type="range" id="ob-study-hours" min="1" max="8" value="3"
+                                        oninput="document.getElementById('study-hours-val').innerText = this.value + ' Hours'">
+                                    <p class="help-text">Consistency is key! Starting with 2–4 hours is highly
+                                        sustainable.</p>
+                                </div>
+                                <div class="form-group">
+                                    <label>Preferred Study Days</label>
+                                    <div class="checkbox-grid">
+                                        <label class="checkbox-container"><input type="checkbox" value="Monday" checked
+                                                class="ob-study-day"> Monday</label>
+                                        <label class="checkbox-container"><input type="checkbox" value="Tuesday" checked
+                                                class="ob-study-day"> Tuesday</label>
+                                        <label class="checkbox-container"><input type="checkbox" value="Wednesday"
+                                                checked class="ob-study-day"> Wednesday</label>
+                                        <label class="checkbox-container"><input type="checkbox" value="Thursday"
+                                                checked class="ob-study-day"> Thursday</label>
+                                        <label class="checkbox-container"><input type="checkbox" value="Friday" checked
+                                                class="ob-study-day"> Friday</label>
+                                        <label class="checkbox-container"><input type="checkbox" value="Saturday"
+                                                checked class="ob-study-day"> Saturday</label>
+                                        <label class="checkbox-container"><input type="checkbox" value="Sunday"
+                                                class="ob-study-day"> Sunday</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ob-study-hours-range">Preferred Time Slot</label>
+                                    <select id="ob-study-hours-range" class="glass-input">
+                                        <option value="afternoon">Afternoon (2:00 PM – 5:00 PM)</option>
+                                        <option value="evening" selected>Evening (5:00 PM – 8:00 PM)</option>
+                                        <option value="night">Night (8:00 PM – 11:00 PM)</option>
+                                        <option value="morning">Early Morning (5:00 AM – 8:00 AM)</option>
+                                    </select>
+                                </div>
+                                <div class="wizard-buttons">
+                                    <button type="button" class="glass-btn secondary-btn"
+                                        onclick="onboarding.prevStep(3)">⬅️
+                                        Back</button>
+                                    <button type="button" class="glass-btn primary-btn btn-glowing"
+                                        onclick="onboarding.nextStep(3)">Next Step ➡️</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 4: Goals & Environment -->
+                            <div class="wizard-step-panel" id="step-4">
+                                <h2>Environment &amp; Goals</h2>
+                                <p class="step-desc">Lastly, outline your current environment and academic target.</p>
+                                <div class="form-row">
+                                    <div class="form-group col-6">
+                                        <label for="ob-environment">Study Environment</label>
+                                        <select id="ob-environment" class="glass-input" required>
+                                            <option value="self">Self Study Only</option>
+                                            <option value="school_self" selected>School + Self Study</option>
+                                            <option value="school_academy">School + Academy</option>
+                                            <option value="academy_self">Academy + Self Study</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="ob-prep-stage">Preparation Stage</label>
+                                        <select id="ob-prep-stage" class="glass-input" required>
+                                            <option value="just_started">Just Started (0–20% Syllabus Done)</option>
+                                            <option value="halfway" selected>Halfway (40–60% Syllabus Done)</option>
+                                            <option value="revision">Revision Phase (80%+ Syllabus Done)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Target Marks Percentage</label>
+                                    <div class="target-marks-selector">
+                                        <label class="target-card active">
+                                            <input type="radio" name="ob-target" value="topper" checked
+                                                onclick="onboarding.selectTargetCard(this)">
+                                            <span class="badge">95%+</span>
+                                            <h4>Topper Position</h4>
+                                            <p>Intense schedules, full syllabus + past papers deep dives.</p>
+                                        </label>
+                                        <label class="target-card">
+                                            <input type="radio" name="ob-target" value="high"
+                                                onclick="onboarding.selectTargetCard(this)">
+                                            <span class="badge">80%+</span>
+                                            <h4>First Division</h4>
+                                            <p>Balanced schedule, core topics, revision cycles.</p>
+                                        </label>
+                                        <label class="target-card">
+                                            <input type="radio" name="ob-target" value="safe"
+                                                onclick="onboarding.selectTargetCard(this)">
+                                            <span class="badge">60%+</span>
+                                            <h4>Syllabus Passer</h4>
+                                            <p>Moderate load, focuses on important chapters.</p>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- AI Generation Loading Overlay -->
+                                <div id="ai-generating-overlay" class="ai-generating-overlay hidden">
+                                    <div class="spinner"></div>
+                                    <h3 style="font-family:'Outfit',sans-serif;">Mentor is Customising Your Schedule...
+                                    </h3>
+                                    <ul id="ai-loading-steps">
+                                        <li class="active">Analysing board chapter weightage...</li>
+                                        <li>Balancing Science vs Humanities time blocks...</li>
+                                        <li>Injecting Active Recall revision blocks...</li>
+                                        <li>Finalising Mentor chat negotiation rules...</li>
+                                    </ul>
+                                </div>
+
+                                <div class="wizard-buttons">
+                                    <button type="button" class="glass-btn secondary-btn"
+                                        onclick="onboarding.prevStep(4)">⬅️
+                                        Back</button>
+                                    <button type="button" class="glass-btn primary-btn btn-glowing"
+                                        onclick="onboarding.finishOnboarding()">Generate Study Plan 🪄</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==================== SCREEN 4: MAIN DASHBOARD ==================== -->
+                <main id="screen-dashboard" class="hidden">
+
+                    <div id="sidebar-overlay" class="sidebar-overlay" onclick="ui.closeSidebar()"></div>
+
+                    <!-- ==================== SIDEBAR ==================== -->
+                    <aside class="sidebar">
+
+                        <!-- Logo -->
+                        <div class="sidebar-logo-wrap">
+                            <svg width="32" height="32" viewBox="0 0 36 36" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <rect width="36" height="36" rx="10" fill="#6366F1" fill-opacity="0.15" />
+                                <path
+                                    d="M9 11C9 9.89 9.89 9 11 9H25C26.11 9 27 9.89 27 11V25C27 26.11 26.11 27 25 27H11C9.89 27 9 26.11 9 25V11Z"
+                                    stroke="#818CF8" stroke-width="1.5" fill="none" />
+                                <path d="M13 14H23M13 18H20M13 22H18" stroke="#818CF8" stroke-width="1.5"
+                                    stroke-linecap="round" />
+                                <circle cx="25" cy="11" r="4" fill="#6366F1" />
+                                <path d="M23.5 11L24.5 12L26.5 10" stroke="#fff" stroke-width="1.2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <div>
+                                <div class="logo-title">Study<span>Guide</span></div>
+                                <span class="logo-sub">Your AI Study Companion</span>
+                            </div>
+                        </div>
+
+                        <!-- Student Profile Widget -->
+                        <div class="sidebar-profile">
+                            <div class="profile-avatar-initial" id="sidebar-avatar-initial">H</div>
+                            <div class="profile-info">
+                                <h4 id="sidebar-student-name">Muhammad Hamza</h4>
+                                <small id="sidebar-student-class">Class 10th – FBISE</small>
+                                <button class="profile-view-btn" onclick="ui.switchTab('dash')">
+                                    View Profile
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5">
+                                        <polyline points="9 18 15 12 9 6" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Navigation -->
+                        <nav class="sidebar-nav">
+                            <!-- Overview Dashboard -->
+                            <button id="nav-dash" class="nav-item active" onclick="ui.switchTab('dash')">
+                                <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="7" height="7" rx="1" />
+                                    <rect x="14" y="3" width="7" height="7" rx="1" />
+                                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                                    <rect x="14" y="14" width="7" height="7" rx="1" />
+                                </svg>
+                                Overview Dashboard
+                            </button>
+
+                            <!-- Study Planner -->
+                            <button id="nav-planner" class="nav-item" onclick="ui.switchTab('planner')">
+                                <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                    <line x1="3" y1="10" x2="21" y2="10" />
+                                    <line x1="8" y1="14" x2="10" y2="14" />
+                                    <line x1="12" y1="14" x2="14" y2="14" />
+                                </svg>
+                                Study Planner
+                            </button>
+
+                            <!-- Mentor Chat -->
+                            <button id="nav-coach" class="nav-item" onclick="ui.switchTab('coach')">
+                                <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                                    <circle cx="9" cy="10" r="1" fill="currentColor" />
+                                    <circle cx="12" cy="10" r="1" fill="currentColor" />
+                                    <circle cx="15" cy="10" r="1" fill="currentColor" />
+                                </svg>
+                                Mentor Chat
+                                <span id="coach-noti-badge" class="nav-badge-dot hidden"></span>
+                            </button>
+
+                            <!-- Tests & Revision -->
+                            <button id="nav-tests" class="nav-item" onclick="ui.switchTab('tests')">
+                                <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
+                                    <rect x="9" y="3" width="6" height="4" rx="1" />
+                                    <line x1="9" y1="12" x2="15" y2="12" />
+                                    <line x1="9" y1="16" x2="13" y2="16" />
+                                    <path d="M16 16l1 1 2-2" stroke="currentColor" stroke-width="1.5" />
+                                </svg>
+                                Tests &amp; Revision
+                            </button>
+
+                            <!-- Insights & Reports -->
+                            <button id="nav-analytics" class="nav-item" onclick="ui.switchTab('analytics')">
+                                <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 20V10" />
+                                    <path d="M12 20V4" />
+                                    <path d="M6 20v-6" />
+                                </svg>
+                                Insights &amp; Reports
+                            </button>
+                        </nav>
+
+                        <!-- Sidebar Footer -->
+                        <div class="sidebar-footer">
+                            <!-- Settings -->
+                            <button class="nav-item" onclick="ui.openSettingsModal()">
+                                <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="3" />
+                                    <path
+                                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                                </svg>
+                                Settings (Gemini API Key)
+                            </button>
+
+                            <!-- Light/Dark Toggle -->
+                            <div class="theme-toggle-row">
+                                <span>
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <circle cx="12" cy="12" r="5" />
+                                        <line x1="12" y1="1" x2="12" y2="3" />
+                                        <line x1="12" y1="21" x2="12" y2="23" />
+                                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                                        <line x1="1" y1="12" x2="3" y2="12" />
+                                        <line x1="21" y1="12" x2="23" y2="12" />
+                                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                                    </svg>
+                                    Light Mode
+                                </span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="theme-toggle" onchange="ui.toggleTheme(this)">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="sidebar-divider"></div>
+
+                            <!-- Logout -->
+                            <button class="nav-item" style="color:var(--danger);" onclick="appRoute.handleLogout()">
+                                <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                    <polyline points="16 17 21 12 16 7" />
+                                    <line x1="21" y1="12" x2="9" y2="12" />
+                                </svg>
+                                Logout
+                            </button>
+                        </div>
+                    </aside>
+
+                    <!-- ==================== MAIN PANEL ==================== -->
+                    <section class="main-panel">
+
+                        <!-- TOP HEADER -->
+                        <header class="main-header">
+                            <div class="header-left">
+                                <button id="sidebar-toggle-btn" class="sidebar-toggle-btn" onclick="ui.toggleSidebar()"
+                                    aria-label="Toggle sidebar">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round">
+                                        <line x1="3" y1="6" x2="21" y2="6" />
+                                        <line x1="3" y1="12" x2="21" y2="12" />
+                                        <line x1="3" y1="18" x2="21" y2="18" />
+                                    </svg>
+                                </button>
+                                <h1 id="header-title">Overview Dashboard</h1>
+                            </div>
+                            <div class="header-right">
+                                <!-- Study Streak -->
+                                <div class="streak-widget">
+                                    <span class="streak-icon">🔥</span>
+                                    <div>
+                                        <span class="streak-count" id="header-streak-count">0 Days</span>
+                                        <label>Study Streak</label>
+                                    </div>
+                                </div>
+                                <!-- Syllabus Progress -->
+                                <div class="header-progress-wrap">
+                                    <div class="header-progress-label">
+                                        <span>Syllabus Covered</span>
+                                        <span id="header-progress-text">0%</span>
+                                    </div>
+                                    <div class="progress-track">
+                                        <div class="progress-fill" id="header-progress-fill" style="width:0%;"></div>
+                                    </div>
+                                </div>
+                                <!-- Settings shortcut -->
+                                <button class="header-icon-btn" title="Settings" onclick="ui.openSettingsModal()">
+                                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="3" />
+                                        <path
+                                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </header>
+
+                        <!-- DYNAMIC CONTENT VIEWS -->
+                        <div class="workspace-content">
+
+                            <!-- ===== VIEW A: OVERVIEW DASHBOARD ===== -->
+                            <div id="tab-dash" class="tab-panel active">
+                                <div class="dash-grid">
+
+                                    <!-- Welcome Banner -->
+                                    <div class="welcome-banner span-12">
+                                        <div class="banner-content">
+                                            <h2>Assalamu Alaikum, <span id="dash-welcome-name">Hamza</span>! 👋</h2>
+                                            <p id="dash-daily-quote" class="quote">"Kaam kaam aur bas kaam!"</p>
+                                            <p id="dash-quote-author" class="quote-author">— Quaid-e-Azam Muhammad Ali
+                                                Jinnah
+                                            </p>
+                                        </div>
+                                        <div class="banner-target-badge">
+                                            🏆 Target: <span id="dash-target-display">95%+</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Today's Study Progress -->
+                                    <div class="metric-card span-4 flex-column justify-between"
+                                        style="display:flex;flex-direction:column;">
+                                        <h3>Today's Study Progress</h3>
+                                        <div class="progress-circle-wrap">
+                                            <div class="progress-circle-container">
+                                                <svg class="progress-circle" viewBox="0 0 36 36">
+                                                    <path class="circle-bg"
+                                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                                    <path class="circle" id="dash-circle-progress"
+                                                        stroke-dasharray="0, 100"
+                                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                                </svg>
+                                                <div class="percentage" id="dash-percent-text">0%</div>
+                                            </div>
+                                            <p class="progress-subtext">Keep going, you've got this!</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Mentor's Tip of the Day -->
+                                    <div class="metric-card span-4 flex-column justify-between"
+                                        style="display:flex;flex-direction:column;">
+                                        <h3>Mentor's Tip of the Day</h3>
+                                        <div class="tip-body">
+                                            <span style="font-size:1.2rem;flex-shrink:0;">💡</span>
+                                            <p id="dash-daily-tip">Keep a separate formula notebook for Mathematics and
+                                                Physics
+                                                numericals.</p>
+                                        </div>
+                                        <button class="glass-btn secondary-btn text-sm w-full"
+                                            onclick="ui.loadRandomTip()">
+                                            Next Tip &nbsp;→
+                                        </button>
+                                    </div>
+
+                                    <!-- Next Mock Test -->
+                                    <div class="metric-card span-4 flex-column justify-between"
+                                        style="display:flex;flex-direction:column;">
+                                        <h3>Next Mock Test</h3>
+                                        <div id="dash-mock-test-widget">
+                                            <div class="test-info-widget">
+                                                <h4 id="dash-test-title">No upcoming mock tests scheduled.</h4>
+                                                <p id="dash-test-date"></p>
+                                            </div>
+                                            <p class="text-xs text-muted" id="dash-test-syllabus"></p>
+                                        </div>
+                                        <div class="flex flex-column gap-xs mt-sm">
+                                            <button class="glass-btn secondary-btn text-sm w-full"
+                                                onclick="ui.openAddTestModal()">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                                    <line x1="3" y1="10" x2="21" y2="10" />
+                                                </svg>
+                                                Schedule Test
+                                            </button>
+                                            <button class="glass-btn primary-btn text-sm w-full"
+                                                onclick="ui.switchTab('tests')">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <path d="M18 20V10" />
+                                                    <path d="M12 20V4" />
+                                                    <path d="M6 20v-6" />
+                                                </svg>
+                                                View Test Center
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Study Stopwatch -->
+                                    <div class="metric-card stopwatch-card span-6">
+                                        <h3>Study Stopwatch</h3>
+                                        <div class="stopwatch-subject-select">
+                                            <select id="stopwatch-subject-select" class="glass-input"></select>
+                                        </div>
+                                        <div class="stopwatch-face">
+                                            <div class="stopwatch-time" id="stopwatch-time-display">00:00</div>
+                                            <div class="stopwatch-status" id="stopwatch-status-label">Ready</div>
+                                            <div class="stopwatch-controls">
+                                                <button type="button" class="stopwatch-btn stopwatch-btn-primary"
+                                                    id="stopwatch-start-btn" title="Start"
+                                                    onclick="ui.stopwatchStart()">▶</button>
+                                                <button type="button" class="stopwatch-btn" id="stopwatch-pause-btn"
+                                                    title="Pause" onclick="ui.stopwatchPause()" disabled>⏸</button>
+                                                <button type="button" class="stopwatch-btn stopwatch-btn-danger"
+                                                    id="stopwatch-reset-btn" title="Reset"
+                                                    onclick="ui.stopwatchReset()">↺</button>
+                                                <button type="button" class="stopwatch-btn stopwatch-btn-primary"
+                                                    id="stopwatch-complete-btn" title="Complete & Log"
+                                                    onclick="ui.stopwatchComplete()" disabled>✓</button>
+                                            </div>
+                                        </div>
+                                        <p class="text-xs text-muted mt-sm">Completing a session logs your time straight
+                                            to today's Insights chart and streak.</p>
+                                    </div>
+
+                                    <!-- Today's Goals -->
+                                    <div class="metric-card dash-goals-card" style="grid-column:span 12;">
+                                        <div class="flex justify-between align-center mb-md">
+                                            <h3>Today's Realistic Goals</h3>
+                                            <span class="text-xs text-muted" id="dash-goals-date"></span>
+                                        </div>
+                                        <div class="task-list" id="dash-today-tasks-list">
+                                            <p class="text-center text-muted" style="padding:2rem 0;">Generating your
+                                                goals...
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Mentor Alert (hidden by default) -->
+                                    <div class="mentor-alert-banner hidden" id="dash-mentor-alert"
+                                        style="grid-column:span 12;">
+                                        <div style="font-size:1.5rem;">👨‍🏫</div>
+                                        <div class="alert-content flex-1">
+                                            <h4>Mentor Negotiation Required</h4>
+                                            <p id="dash-mentor-alert-text">I noticed you missed a task yesterday. Let's
+                                                adjust
+                                                today's schedule to stay on track.</p>
+                                        </div>
+                                        <button class="glass-btn primary-btn text-sm btn-glowing"
+                                            onclick="ui.switchTab('coach')">Negotiate Now</button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- ===== VIEW B: STUDY PLANNER ===== -->
+                            <div id="tab-planner" class="tab-panel">
+                                <div class="planner-layout">
+
+                                    <!-- Weekly Calendar Nav -->
+                                    <div class="weekly-calendar-nav">
+                                        <div class="calendar-header flex justify-between align-center mb-md">
+                                            <h3 id="planner-month-year">July 2026</h3>
+                                            <div class="flex gap-xs">
+                                                <button class="glass-btn btn-icon"
+                                                    onclick="ui.changeWeek(-1)">◀</button>
+                                                <button class="glass-btn secondary-btn text-xs"
+                                                    onclick="ui.goToToday()">Today</button>
+                                                <button class="glass-btn btn-icon" onclick="ui.changeWeek(1)">▶</button>
+                                            </div>
+                                        </div>
+                                        <div class="calendar-days-grid" id="planner-calendar-days"></div>
+                                    </div>
+
+                                    <!-- Task Detail -->
+                                    <div class="planner-tasks-detail">
+                                        <div class="flex justify-between align-center mb-md">
+                                            <div>
+                                                <h2 id="planner-selected-date-text">Study Targets for Today</h2>
+                                                <p class="text-xs text-muted">Goals generated by Mentor based on board
+                                                    weightage.</p>
+                                            </div>
+                                            <button class="glass-btn primary-btn text-xs"
+                                                onclick="ui.openAddTaskModal()">➕ Add
+                                                Custom Study Block</button>
+                                        </div>
+                                        <div class="task-list" id="planner-tasks-list"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- ===== VIEW C: MENTOR CHAT ===== -->
+                            <div id="tab-coach" class="tab-panel">
+                                <div class="coach-layout">
+
+                                    <!-- Mentor Header -->
+                                    <div class="coach-header">
+                                        <div class="mentor-avatar">👨‍🏫</div>
+                                        <div class="mentor-status">
+                                            <h3>Mentor (AI Study Coach)</h3>
+                                            <span id="coach-status-indicator">
+                                                <span class="status-indicator-online">● Online</span>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Chat Messages -->
+                                    <div class="chat-messages-container" id="chat-messages-container">
+                                        <div class="chat-bubble bubble-mentor animate-fade-in">
+                                            <p>Assalamu Alaikum! I am your Study Mentor. I've customised your study plan
+                                                based
+                                                on your grade, syllabus, and study days. I will monitor your progress
+                                                daily.</p>
+                                            <p class="text-xs text-muted mt-xs">12:00 PM</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Negotiation Box -->
+                                    <div class="negotiation-workspace hidden" id="negotiation-workspace-box">
+                                        <div class="flex align-center gap-sm mb-xs">
+                                            <span style="font-size:1.1rem;">⚠️</span>
+                                            <h4
+                                                style="font-family:'Outfit',sans-serif;font-weight:700;font-size:0.88rem;color:var(--warning);">
+                                                Mentor's Adjustment Recommendation</h4>
+                                        </div>
+                                        <p class="text-xs" id="negotiation-task-desc">You missed a study session
+                                            yesterday.
+                                            Select one option to update your plan:</p>
+                                        <div class="negotiation-options mt-sm flex-column gap-xs">
+                                            <label class="negotiation-option-card">
+                                                <input type="radio" name="negotiation-option" value="option1" checked>
+                                                <span>Add 30 mins to today's schedule for this subject</span>
+                                            </label>
+                                            <label class="negotiation-option-card">
+                                                <input type="radio" name="negotiation-option" value="option2">
+                                                <span>Move this study session to Sunday (your off-day)</span>
+                                            </label>
+                                            <label class="negotiation-option-card">
+                                                <input type="radio" name="negotiation-option" value="option3">
+                                                <span>Postpone this topic to the end of the week</span>
+                                            </label>
+                                        </div>
+                                        <div class="flex justify-end gap-sm mt-sm">
+                                            <button class="glass-btn secondary-btn text-xs"
+                                                onclick="ui.closeNegotiationBox()">Ask Mentor Later</button>
+                                            <button class="glass-btn primary-btn text-xs btn-glowing"
+                                                onclick="ui.approveNegotiation()">Approve Adjustment ✅</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Quick Suggestions -->
+                                    <div class="quick-suggest-container">
+                                        <button onclick="ui.sendQuickSuggest('Help me revise Physics')"
+                                            class="suggest-chip">Help me revise Physics ⚡</button>
+                                        <button onclick="ui.sendQuickSuggest('How do I score 95%+ in Math?')"
+                                            class="suggest-chip">Math prep tips 📐</button>
+                                        <button onclick="ui.sendQuickSuggest('I feel overwhelmed today')"
+                                            class="suggest-chip">Feeling tired 😴</button>
+                                        <button onclick="ui.sendQuickSuggest('Recommend custom study hours')"
+                                            class="suggest-chip">Timetable help 📅</button>
+                                    </div>
+
+                                    <!-- Chat Input -->
+                                    <form class="chat-input-bar" onsubmit="ui.handleSendMsg(event)">
+                                        <input type="text" id="chat-user-input" class="glass-input"
+                                            placeholder="Ask anything: 'How to revise math?' or 'I feel tired'..."
+                                            required>
+                                        <button type="submit" id="chat-send-btn" class="glass-btn primary-btn">Send
+                                            →</button>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                            <!-- ===== VIEW D: TESTS & REVISION ===== -->
+                            <div id="tab-tests" class="tab-panel">
+                                <div class="test-layout-grid">
+
+                                    <!-- Mock Test Schedule -->
+                                    <div class="metric-card">
+                                        <div class="flex justify-between align-center mb-md">
+                                            <h3>Scheduled Mock Tests</h3>
+                                            <button class="glass-btn primary-btn text-xs"
+                                                onclick="ui.openAddTestModal()">➕
+                                                Schedule Mock Test</button>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="premium-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        <th>Subject</th>
+                                                        <th>Topic Name</th>
+                                                        <th>Syllabus Scope</th>
+                                                        <th>Marks</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="test-list-tbody"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <!-- Revision Assistant -->
+                                    <div class="metric-card flex-column justify-between"
+                                        style="display:flex;flex-direction:column;">
+                                        <div>
+                                            <h3>Revision Assistant</h3>
+                                            <p class="text-xs text-muted mb-md">Mentor analyses subjects with low mock
+                                                marks and
+                                                prompts revision cycles.</p>
+                                            <div class="revision-meter-list" id="revision-subject-needs-list"></div>
+                                        </div>
+                                        <div class="alert-box-info mt-md">
+                                            <span>💡</span>
+                                            <p class="text-xs">When you add a mock test, the planner automatically
+                                                schedules
+                                                study time for that subject 3 days in advance!</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Past Papers Tracker -->
+                                    <div class="metric-card" style="grid-column: span 2;">
+                                        <div class="flex justify-between align-center mb-md">
+                                            <h3>Past Papers Tracker (2021–2025)</h3>
+                                            <span class="text-xs text-muted">Tap a year chip to mark it solved</span>
+                                        </div>
+                                        <div class="past-papers-wrap" id="past-papers-container"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- ===== VIEW E: ANALYTICS ===== -->
+                            <div id="tab-analytics" class="tab-panel">
+                                <div class="analytics-layout-grid">
+
+                                    <!-- Chart -->
+                                    <div class="metric-card">
+                                        <h3>Weekly Study Hours Trend</h3>
+                                        <p class="text-xs text-muted mb-md">Daily study minutes tracked through task
+                                            completion.
+                                        </p>
+                                        <div class="chart-canvas-container">
+                                            <svg viewBox="0 0 500 200" id="analytics-svg-chart" class="svg-chart">
+                                                <line x1="40" y1="20" x2="480" y2="20" class="chart-grid-line" />
+                                                <line x1="40" y1="70" x2="480" y2="70" class="chart-grid-line" />
+                                                <line x1="40" y1="120" x2="480" y2="120" class="chart-grid-line" />
+                                                <line x1="40" y1="170" x2="480" y2="170" class="chart-grid-line" />
+                                                <text x="15" y="25" class="chart-label">4h</text>
+                                                <text x="15" y="75" class="chart-label">2h</text>
+                                                <text x="15" y="125" class="chart-label">1h</text>
+                                                <text x="15" y="175" class="chart-label">0h</text>
+                                                <polyline
+                                                    points="40,170 113,170 186,170 259,170 332,170 405,170 478,170"
+                                                    id="chart-line" fill="none" stroke="var(--accent)"
+                                                    stroke-width="2.5" />
+                                                <g id="chart-points"></g>
+                                                <text x="40" y="195" class="chart-label">Mon</text>
+                                                <text x="113" y="195" class="chart-label">Tue</text>
+                                                <text x="186" y="195" class="chart-label">Wed</text>
+                                                <text x="259" y="195" class="chart-label">Thu</text>
+                                                <text x="332" y="195" class="chart-label">Fri</text>
+                                                <text x="405" y="195" class="chart-label">Sat</text>
+                                                <text x="478" y="195" class="chart-label">Sun</text>
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    <!-- Weekly Report -->
+                                    <div class="metric-card">
+                                        <h3>Mentor's Weekly Report</h3>
+                                        <p class="text-xs text-muted mb-md">Compiled metrics from active study logs.</p>
+                                        <div class="weekly-evaluation-widget" id="weekly-report-card">
+                                            <div class="flex justify-around mb-md">
+                                                <div class="text-center">
+                                                    <span class="report-value">0%</span>
+                                                    <label class="text-xs text-muted block">Completion</label>
+                                                </div>
+                                                <div class="text-center">
+                                                    <span class="report-value" id="report-streak-val">0</span>
+                                                    <label class="text-xs text-muted block">Max Streak</label>
+                                                </div>
+                                            </div>
+                                            <div class="insights-box">
+                                                <h5>Observations:</h5>
+                                                <ul class="text-xs list-bullets" id="report-observations-list">
+                                                    <li>Start studying to compile weekly reports.</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <!-- ==================== MOBILE BOTTOM NAV ==================== -->
+                    <nav class="bottom-nav">
+                        <button id="bottomnav-dash" class="bottom-nav-item active" onclick="ui.switchTab('dash')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7" rx="1" />
+                                <rect x="14" y="3" width="7" height="7" rx="1" />
+                                <rect x="3" y="14" width="7" height="7" rx="1" />
+                                <rect x="14" y="14" width="7" height="7" rx="1" />
+                            </svg>
+                            <span>Home</span>
+                        </button>
+                        <button id="bottomnav-planner" class="bottom-nav-item" onclick="ui.switchTab('planner')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" />
+                                <line x1="16" y1="2" x2="16" y2="6" />
+                                <line x1="8" y1="2" x2="8" y2="6" />
+                                <line x1="3" y1="10" x2="21" y2="10" />
+                            </svg>
+                            <span>Planner</span>
+                        </button>
+                        <button id="bottomnav-coach" class="bottom-nav-item" onclick="ui.switchTab('coach')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                            </svg>
+                            <span>Mentor</span>
+                            <span id="bottomnav-coach-badge" class="nav-badge-dot hidden"></span>
+                        </button>
+                        <button id="bottomnav-tests" class="bottom-nav-item" onclick="ui.switchTab('tests')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
+                                <rect x="9" y="3" width="6" height="4" rx="1" />
+                            </svg>
+                            <span>Tests</span>
+                        </button>
+                        <button id="bottomnav-analytics" class="bottom-nav-item" onclick="ui.switchTab('analytics')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 20V10" />
+                                <path d="M12 20V4" />
+                                <path d="M6 20v-6" />
+                            </svg>
+                            <span>Insights</span>
+                        </button>
+                    </nav>
+
+                </main>
+
+            </div> <!-- /.device-screen-content -->
+        </div> <!-- /.device-screen -->
+    </div> <!-- /#app-container -->
+
+    <!-- ==================== MODAL: ADD CUSTOM TASK ==================== -->
+    <div id="modal-add-task" class="modal-overlay hidden">
+        <div class="modal-card animate-scale-up">
+            <div class="modal-header flex justify-between align-center mb-md">
+                <h3>Add Custom Study Block</h3>
+                <button class="glass-btn btn-icon" onclick="ui.closeAddTaskModal()">✕</button>
+            </div>
+            <form onsubmit="ui.handleAddCustomTask(event)">
+                <div class="form-group">
+                    <label for="task-date">Study Date</label>
+                    <input type="date" id="task-date" class="glass-input" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label for="task-subject">Subject</label>
+                        <select id="task-subject" class="glass-input" required></select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="task-duration">Duration (Minutes)</label>
+                        <input type="number" id="task-duration" min="15" max="240" value="45" class="glass-input"
+                            required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="task-title">Chapter / Study Goal</label>
+                    <input type="text" id="task-title" class="glass-input"
+                        placeholder="e.g. Ch 2 Exercise 2.5 solve Q1–Q5" required>
+                </div>
+                <div class="flex justify-end gap-sm mt-md">
+                    <button type="button" class="glass-btn secondary-btn"
+                        onclick="ui.closeAddTaskModal()">Cancel</button>
+                    <button type="submit" class="glass-btn primary-btn btn-glowing">Create Goal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: SCHEDULE MOCK TEST ==================== -->
+    <div id="modal-add-test" class="modal-overlay hidden">
+        <div class="modal-card animate-scale-up">
+            <div class="modal-header flex justify-between align-center mb-md">
+                <h3>Schedule New Mock Test</h3>
+                <button class="glass-btn btn-icon" onclick="ui.closeAddTestModal()">✕</button>
+            </div>
+            <form onsubmit="ui.handleAddMockTest(event)">
+                <div class="form-group">
+                    <label for="test-date-input">Test Date</label>
+                    <input type="date" id="test-date-input" class="glass-input" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label for="test-subject-input">Subject</label>
+                        <select id="test-subject-input" class="glass-input" required></select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="test-max-marks">Total Marks</label>
+                        <input type="number" id="test-max-marks" min="10" max="150" value="75" class="glass-input"
+                            required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="test-title-input">Test Chapter / Title</label>
+                    <input type="text" id="test-title-input" class="glass-input"
+                        placeholder="e.g. Physics Ch 10 SHM Numerical Problems" required>
+                </div>
+                <div class="form-group">
+                    <label for="test-syllabus-input">Syllabus Scope</label>
+                    <input type="text" id="test-syllabus-input" class="glass-input"
+                        placeholder="e.g. Exercise 10.1 to 10.4 &amp; full definitions" required>
+                </div>
+                <div class="flex justify-end gap-sm mt-md">
+                    <button type="button" class="glass-btn secondary-btn"
+                        onclick="ui.closeAddTestModal()">Cancel</button>
+                    <button type="submit" class="glass-btn primary-btn btn-glowing">Schedule Test</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: RECORD TEST MARKS ==================== -->
+    <div id="modal-test-marks" class="modal-overlay hidden">
+        <div class="modal-card animate-scale-up">
+            <div class="modal-header flex justify-between align-center mb-md">
+                <h3>Record Mock Test Result</h3>
+                <button class="glass-btn btn-icon" onclick="ui.closeTestMarksModal()">✕</button>
+            </div>
+            <form onsubmit="ui.handleSaveTestMarks(event)">
+                <input type="hidden" id="marks-test-id">
+                <div class="form-group">
+                    <p class="mb-sm text-sm">Enter the marks you scored for:</p>
+                    <h4 id="marks-test-title" class="text-accent" style="font-family:'Outfit',sans-serif;">Physics Ch 10
+                        Test</h4>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label for="marks-scored-input">Marks Scored</label>
+                        <input type="number" id="marks-scored-input" min="0" class="glass-input" required>
+                    </div>
+                    <div class="form-group col-6">
+                        <label>Max Marks</label>
+                        <input type="text" id="marks-max-display" class="glass-input" disabled>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-sm mt-md">
+                    <button type="button" class="glass-btn secondary-btn"
+                        onclick="ui.closeTestMarksModal()">Cancel</button>
+                    <button type="submit" class="glass-btn primary-btn btn-glowing">Save Result</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: SETTINGS (Gemini API Key) ==================== -->
+    <div id="modal-settings" class="modal-overlay hidden">
+        <div class="modal-card animate-scale-up">
+            <div class="modal-header flex justify-between align-center mb-md">
+                <h3>⚙️ Settings</h3>
+                <button class="glass-btn btn-icon" onclick="ui.closeSettingsModal()">✕</button>
+            </div>
+
+            <div class="settings-section">
+                <h4>Gemini AI Mentor</h4>
+                <p class="text-xs text-muted mb-sm">Add your own free Gemini API key to power Mentor Chat with real
+                    AI responses tailored to your board, stream, and target. Your key is stored only in this
+                    browser's local storage — it is never uploaded to our servers or sent anywhere except directly to Google's API.</p>
+                <form onsubmit="ui.handleSaveGeminiKey(event)">
+                    <div class="settings-key-row">
+                        <input type="password" id="settings-gemini-key-input" class="glass-input"
+                            placeholder="Paste your Gemini API key (AIza...)">
+                        <button type="submit" class="glass-btn primary-btn text-sm">Save</button>
+                    </div>
+                </form>
+                <div class="flex gap-sm mt-sm">
+                    <button type="button" class="glass-btn secondary-btn text-xs"
+                        onclick="ui.handleClearGeminiKey()">Clear Key</button>
+                </div>
+                <div id="settings-key-status" class="settings-key-status"><span class="dot"></span> Using built-in
+                    Mentor (no key saved)</div>
+                <p id="settings-save-feedback" class="text-xs text-success mt-xs hidden"></p>
+                <div class="settings-help-box mt-sm">
+                    💡 Don't have a key yet? Get a free one at
+                    <a href="https://aistudio.google.com/apikey" target="_blank"
+                        rel="noopener">aistudio.google.com/apikey</a>.
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h4>Display</h4>
+                <div class="settings-view-toggle-row">
+                    <span class="text-sm">Full-screen responsive view (desktop)</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="settings-shell-toggle"
+                            onchange="ui.setShellMode(this.checked ? 'full' : 'frame')">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/data.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/coach.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- Theme + shell-mode init from localStorage -->
+    <script>
+        (function () {
+            var saved = localStorage.getItem('sg_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', saved);
+            document.addEventListener('DOMContentLoaded', function () {
+                var toggle = document.getElementById('theme-toggle');
+                if (toggle) toggle.checked = (saved === 'light');
+
+                // Init desktop phone-frame / full-screen shell preference
+                if (window.StudyPlannerUI && typeof window.StudyPlannerUI.initShellMode === 'function') {
+                    window.StudyPlannerUI.initShellMode();
+                }
+
+                // Live status-bar clock inside the phone-frame mockup
+                var clockEl = document.getElementById('device-status-time');
+                if (clockEl) {
+                    var updateClock = function () {
+                        var now = new Date();
+                        var h = now.getHours() % 12 || 12;
+                        var m = String(now.getMinutes()).padStart(2, '0');
+                        clockEl.textContent = h + ':' + m;
+                    };
+                    updateClock();
+                    setInterval(updateClock, 30000);
+                }
+            });
+        })();
+    </script>
+
+</body>
+
+</html>

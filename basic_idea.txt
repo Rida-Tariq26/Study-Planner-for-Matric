@@ -1,0 +1,118 @@
+Vision
+
+Create an AI-powered study planner specifically for Pakistani Matric students that provides personalized, realistic study plans instead of rigid timetables.
+
+Problem
+
+Many Matric students struggle to study effectively because they lack a personalized study strategy. Some create overly ambitious timetables that become unsustainable, while others don't study consistently because they don't know where to begin or what to study next. Without clear direction, they waste time, become overwhelmed, fall behind on the syllabus, and enter exams underprepared.
+
+Solution
+
+An AI-powered personalized study planner that generates realistic daily study goals based on each student's:
+
+Board
+Class (9th or 10th)
+Study environment
+Available study time
+Preparation stage
+Target marks
+
+The planner intelligently balances subjects while incorporating:
+
+Revision
+Breaks
+Regular tests
+Progress tracking
+
+The goal is that students never have to guess what to study next.
+
+Target Users
+
+Pakistani Matric students.
+
+The application supports:
+
+Matric Part I (9th)
+Matric Part II (10th)
+
+During onboarding, students provide:
+
+Board
+Class
+Study environment
+School
+Academy
+Self-study
+Daily available study time
+Preferred Study Days (e.g., Monday–Friday, Monday–Saturday, Every Day)
+Preferred Study Hours (e.g., 4:00 PM–7:00 PM)
+Preparation stage
+Target marks
+Core Principles
+
+The application should:
+
+Create realistic daily goals.
+Avoid overloading students.
+Promote consistency over intensity.
+Balance all subjects intelligently.
+Include revision naturally.
+Schedule tests at appropriate times.
+Help students complete the syllabus on time.
+AI Philosophy
+
+The AI acts as a study coach, not just a timetable generator.
+
+It should:
+
+Build an initial personalized study plan.
+Monitor progress throughout the week.
+Conduct a weekly review.
+Identify strengths and weaknesses.
+Suggest improvements.
+
+Important rule:
+
+The AI never changes the student's plan or goals on its own.
+
+Instead, it:
+
+Presents its observations.
+Makes recommendations.
+Negotiates with the student.
+Updates the plan only after receiving the student's approval.
+
+The student always has the final decision.
+
+Desired Outcomes
+
+Students should:
+
+Complete the syllabus on time.
+Build a consistent study habit.
+Experience less stress.
+Prepare better for exams.
+Improve time management.
+Gain confidence.
+Achieve higher grades.
+
+Authentication (Locked)
+Registration
+
+The user must provide:
+
+Username
+Email Address
+Password
+Verification
+Email verification is required before accessing the application.
+Login
+
+The user can log in using:
+
+Username or Email
+Password
+Guest Mode
+Not available.
+Every user must create an account before using the application.
+
