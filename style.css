@@ -2987,7 +2987,7 @@ input[type="range"]::-webkit-slider-thumb {
 
     #screen-dashboard {
         flex-direction: column;
-        height: 100vh;
+        height: 100dvh;
     }
 
     .main-panel {
@@ -3003,13 +3003,27 @@ input[type="range"]::-webkit-slider-thumb {
     }
 
     .coach-layout {
-        height: calc(100vh - 190px - var(--bottom-nav-h));
+        flex: 1;
+        min-height: 0;
     }
 
     .shell-controls-bar {
         display: none;
     }
+
+    .header-progress-wrap {
+        display: none;
+    }
+
+    .streak-widget {
+        padding: 0.35rem 0.65rem;
+    }
+
+    .streak-widget label {
+        display: none;
+    }
 }
+
 
 /* ============================================================
    Responsive – mobile sidebar drawer (≤900px)
@@ -3041,7 +3055,13 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 @media (max-width: 768px) {
-    .dash-grid {
+
+    /* Layout Grids */
+    .dash-grid,
+    .test-layout-grid,
+    .analytics-layout-grid,
+    .stream-selector-grid,
+    .target-marks-selector {
         grid-template-columns: 1fr;
     }
 
@@ -3052,24 +3072,26 @@ input[type="range"]::-webkit-slider-thumb {
         grid-column: span 1;
     }
 
-    .test-layout-grid,
-    .analytics-layout-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .stream-selector-grid,
-    .target-marks-selector {
-        grid-template-columns: 1fr;
-    }
-
+    /* Header & Title Alignment */
     .main-header {
-        padding: 0.85rem 1rem;
+        padding: 0.75rem 1rem;
+        gap: 0.5rem;
+    }
+
+    .header-left {
+        flex: 1;
+        min-width: 0;
+        gap: 0.5rem;
     }
 
     .main-header h1 {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
+    /* Workspace & Forms */
     .workspace-content {
         padding: 1rem;
     }
@@ -3080,5 +3102,15 @@ input[type="range"]::-webkit-slider-thumb {
 
     .col-6 {
         width: 100%;
+    }
+
+    /* Welcome Banner */
+    .welcome-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 1rem;
+        padding: 1.25rem 1.25rem;
+        min-height: auto;
     }
 }
