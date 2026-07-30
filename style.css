@@ -1638,8 +1638,8 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .welcome-banner {
-    grid-column: span 12;
-    position: relative;
+    grid-column: 1 / -1;
+    width: 100% position: relative;
     overflow: hidden;
     border-radius: 16px;
     padding: 2rem 2.25rem;
@@ -3106,6 +3106,8 @@ input[type="range"]::-webkit-slider-thumb {
 
     /* Welcome Banner */
     .welcome-banner {
+        grid-column: 1 / -1;
+        width: 100%;
         flex-direction: column;
         align-items: flex-start;
         justify-content: flex-start;
