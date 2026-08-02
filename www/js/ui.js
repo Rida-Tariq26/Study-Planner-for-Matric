@@ -439,8 +439,6 @@ window.StudyPlannerUI = {
             chatContainer.appendChild(bubble);
         });
 
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-
         // Reflect whether Gemini is connected in the header
         const statusRow = document.getElementById('coach-status-indicator');
         if (statusRow) {
@@ -462,6 +460,7 @@ window.StudyPlannerUI = {
         } else {
             negotiationWorkspace.classList.add('hidden');
         }
+        chatContainer.scrollTop = chatContainer.scrollHeight;
     },
 
     sendQuickSuggest: function (text) {

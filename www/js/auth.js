@@ -4,7 +4,7 @@
 //           password validation, email verification
 // ============================================================
 
-const SUPABASE_URL      = 'https://xjolllrqdwatfchbgddz.supabase.co';
+const SUPABASE_URL = 'https://xjolllrqdwatfchbgddz.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_9IXgE08wrIjI52UOxSTnig_YlVQHcsr';
 
 window.Auth = (function () {
@@ -20,8 +20,8 @@ window.Auth = (function () {
         }
         _client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
             auth: {
-                persistSession   : true,   // JWT stored in localStorage automatically
-                autoRefreshToken : true,   // auto-renew before expiry
+                persistSession: true,   // JWT stored in localStorage automatically
+                autoRefreshToken: true,   // auto-renew before expiry
                 detectSessionInUrl: true   // handle email confirmation redirects via URL hash
             }
         });
@@ -52,7 +52,7 @@ window.Auth = (function () {
 
     function getPasswordStrength(password) {
         let score = 0;
-        if (password.length >= 8)  score++;
+        if (password.length >= 8) score++;
         if (/[A-Z]/.test(password)) score++;
         if (/[0-9]/.test(password)) score++;
         if (/[!@#$%^&*()\-_=+\[\]{};:'",.<>/?\\|`~]/.test(password)) score++;
@@ -61,11 +61,6 @@ window.Auth = (function () {
 
     // ---- Sign Up --------------------------------------------
 
-    /**
-     * Registers a new user with Supabase Auth.
-     * Supabase will automatically send a confirmation email.
-     * @returns { success, message }
-     */
     async function signUp(email, password, username) {
         if (!_client) return { success: false, message: 'Auth not initialised.' };
 
@@ -76,18 +71,17 @@ window.Auth = (function () {
             email,
             password,
             options: {
-                data: { username }  // stored in user_metadata
+                emailRedirectTo: 'studyguide://auth-callback',
+                data: { username }
             }
         });
 
         if (error) return { success: false, message: error.message };
 
-        // If Supabase returns user but with no session → email confirmation required
         if (data.user && !data.session) {
             return { success: true, needsEmailConfirmation: true };
         }
 
-        // Auto-confirmed (e.g. if "Confirm email" is disabled in Supabase settings)
         return { success: true, needsEmailConfirmation: false, user: data.user };
     }
 
@@ -156,7 +150,7 @@ window.Auth = (function () {
      * Events: SIGNED_IN, SIGNED_OUT, TOKEN_REFRESHED, USER_UPDATED
      */
     function onAuthStateChange(callback) {
-        if (!_client) return { data: { subscription: { unsubscribe: () => {} } } };
+        if (!_client) return { data: { subscription: { unsubscribe: () => { } } } };
         return _client.auth.onAuthStateChange(callback);
     }
 

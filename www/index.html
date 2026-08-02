@@ -831,43 +831,42 @@
                                     <div class="chat-messages-container" id="chat-messages-container">
                                         <div class="chat-bubble bubble-mentor animate-fade-in">
                                             <p>Assalamu Alaikum! I am your Study Mentor. I've customised your study plan
-                                                based
-                                                on your grade, syllabus, and study days. I will monitor your progress
-                                                daily.</p>
+                                                based on your grade, syllabus, and study days. I will monitor your
+                                                progress daily.</p>
                                             <p class="text-xs text-muted mt-xs">12:00 PM</p>
                                         </div>
-                                    </div>
 
-                                    <!-- Negotiation Box -->
-                                    <div class="negotiation-workspace hidden" id="negotiation-workspace-box">
-                                        <div class="flex align-center gap-sm mb-xs">
-                                            <span style="font-size:1.1rem;">⚠️</span>
-                                            <h4
-                                                style="font-family:'Outfit',sans-serif;font-weight:700;font-size:0.88rem;color:var(--warning);">
-                                                Mentor's Adjustment Recommendation</h4>
-                                        </div>
-                                        <p class="text-xs" id="negotiation-task-desc">You missed a study session
-                                            yesterday.
-                                            Select one option to update your plan:</p>
-                                        <div class="negotiation-options mt-sm flex-column gap-xs">
-                                            <label class="negotiation-option-card">
-                                                <input type="radio" name="negotiation-option" value="option1" checked>
-                                                <span>Add 30 mins to today's schedule for this subject</span>
-                                            </label>
-                                            <label class="negotiation-option-card">
-                                                <input type="radio" name="negotiation-option" value="option2">
-                                                <span>Move this study session to Sunday (your off-day)</span>
-                                            </label>
-                                            <label class="negotiation-option-card">
-                                                <input type="radio" name="negotiation-option" value="option3">
-                                                <span>Postpone this topic to the end of the week</span>
-                                            </label>
-                                        </div>
-                                        <div class="flex justify-end gap-sm mt-sm">
-                                            <button class="glass-btn secondary-btn text-xs"
-                                                onclick="ui.closeNegotiationBox()">Ask Mentor Later</button>
-                                            <button class="glass-btn primary-btn text-xs btn-glowing"
-                                                onclick="ui.approveNegotiation()">Approve Adjustment ✅</button>
+                                        <!-- Place Negotiation Box INSIDE the scrollable chat container or right below it -->
+                                        <div class="negotiation-workspace hidden" id="negotiation-workspace-box">
+                                            <div class="flex align-center gap-sm mb-xs">
+                                                <span style="font-size:1.1rem;">⚠️</span>
+                                                <h4
+                                                    style="font-family:'Outfit',sans-serif;font-weight:700;font-size:0.88rem;color:var(--warning);">
+                                                    Mentor's Adjustment Recommendation</h4>
+                                            </div>
+                                            <p class="text-xs" id="negotiation-task-desc">You missed a study session
+                                                yesterday. Select one option to update your plan:</p>
+                                            <div class="negotiation-options mt-sm flex-column gap-xs">
+                                                <label class="negotiation-option-card" style="cursor: pointer;">
+                                                    <input type="radio" name="negotiation-option" value="option1"
+                                                        checked>
+                                                    <span>Add 30 mins to today's schedule for this subject</span>
+                                                </label>
+                                                <label class="negotiation-option-card" style="cursor: pointer;">
+                                                    <input type="radio" name="negotiation-option" value="option2">
+                                                    <span>Move this study session to Sunday (your off-day)</span>
+                                                </label>
+                                                <label class="negotiation-option-card" style="cursor: pointer;">
+                                                    <input type="radio" name="negotiation-option" value="option3">
+                                                    <span>Postpone this topic to the end of the week</span>
+                                                </label>
+                                            </div>
+                                            <div class="flex justify-end gap-sm mt-sm">
+                                                <button class="glass-btn secondary-btn text-xs" type="button"
+                                                    onclick="ui.closeNegotiationBox()">Ask Mentor Later</button>
+                                                <button class="glass-btn primary-btn text-xs btn-glowing" type="button"
+                                                    onclick="ui.approveNegotiation()">Approve Adjustment ✅</button>
+                                            </div>
                                         </div>
                                     </div>
 
